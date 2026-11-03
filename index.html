@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>ZİRVE FIRTINASI: Anadolu Offroad</title>
+  
+  <!-- Mobil & PWA Meta Etiketleri -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Zirve">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#2ecc71">
+
+  <!-- İkon & Manifest -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+
+  <!-- Stiller -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- Oyun Çizim Alanı -->
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Üst Menü, Altın Sayacı & Yükle Butonu -->
+    <header class="top-header">
+      <div class="header-left">
+        <div class="coin-badge">
+          <div class="coin-icon">₺</div>
+          <span class="val-coins">1000</span>
+        </div>
+        <div id="fps-counter">60 FPS</div>
+      </div>
+
+      <div class="top-buttons">
+        <button id="btn-install-app" class="btn-install-pwa" title="Ana Ekrana Ekle">📲 UYGULAMAYI YÜKLE</button>
+        <button id="btn-open-quests" class="icon-btn" title="Görevler">🏆</button>
+        <button id="btn-open-settings" class="icon-btn" title="Ayarlar">⚙️</button>
+        <button id="btn-toggle-sound" class="icon-btn" title="Ses Aç/Kapat">🔊</button>
+        <button id="btn-toggle-music" class="icon-btn" title="Müzik Aç/Kapat">🎵</button>
+        <button id="btn-fullscreen" class="icon-btn" title="Tam Ekran">⛶</button>
+      </div>
+    </header>
+
+    <!-- 1. GARAJ & MODİFİYE / ANA EKRAN -->
+    <div id="screen-garage">
+      <div class="garage-center">
+        <!-- Araç Değiştirme Butonu (Sol) -->
+        <button id="btn-prev-vehicle" class="nav-arrow">‹</button>
+
+        <!-- Araç Önizleme -->
+        <div class="vehicle-showcase">
+          <canvas id="garage-preview-canvas" width="280" height="140"></canvas>
+          <h1 id="vehicle-title">Zirve Jeep</h1>
+          <p id="vehicle-desc">Efsanevi kırmızı 4x4 Jeep. Sağlam yol tutuşu ve her tepeye tırmanan tork!</p>
+        </div>
+
+        <!-- Araç Değiştirme Butonu (Sağ) -->
+        <button id="btn-next-vehicle" class="nav-arrow">›</button>
+
+        <!-- Sağ Panel: Geliştirme & Modifiye Sekmeleri -->
+        <div class="garage-right-panel" id="garage-right-panel">
+          <div class="panel-tabs">
+            <button class="tab-btn active" id="tab-btn-upgrades">⚡ GELİŞTİRME</button>
+            <button class="tab-btn" id="tab-btn-tuning">🎨 MODİFİYE</button>
+          </div>
+
+          <!-- Sekme 1: Performans Yükseltmeleri -->
+          <div class="upgrades-container" id="garage-upgrades">
+            <!-- Motor -->
+            <div class="upgrade-row">
+              <div class="up-info">
+                <span class="up-label">⚡ Motor Gücü</span>
+                <div class="up-level-bar"><div class="up-progress" id="bar-engine"></div></div>
+              </div>
+              <button class="up-btn" id="btn-up-engine">
+                <span id="lvl-engine">LVL 1</span> • <span id="cost-engine">130 ₺</span>
+              </button>
+            </div>
+
+            <!-- Süspansiyon -->
+            <div class="upgrade-row">
+              <div class="up-info">
+                <span class="up-label">🌀 Süspansiyon</span>
+                <div class="up-level-bar"><div class="up-progress" id="bar-suspension"></div></div>
+              </div>
+              <button class="up-btn" id="btn-up-suspension">
+                <span id="lvl-suspension">LVL 1</span> • <span id="cost-suspension">130 ₺</span>
+              </button>
+            </div>
+
+            <!-- Lastikler -->
+            <div class="upgrade-row">
+              <div class="up-info">
+                <span class="up-label">🔘 Lastik Tutuşu</span>
+                <div class="up-level-bar"><div class="up-progress" id="bar-tires"></div></div>
+              </div>
+              <button class="up-btn" id="btn-up-tires">
+                <span id="lvl-tires">LVL 1</span> • <span id="cost-tires">130 ₺</span>
+              </button>
+            </div>
+
+            <!-- 4x4 Çekiş -->
+            <div class="upgrade-row">
+              <div class="up-info">
+                <span class="up-label">🚜 4x4 Çekiş</span>
+                <div class="up-level-bar"><div class="up-progress" id="bar-fourwd"></div></div>
+              </div>
+              <button class="up-btn" id="btn-up-fourwd">
+                <span id="lvl-fourwd">LVL 1</span> • <span id="cost-fourwd">130 ₺</span>
+              </button>
+            </div>
+
+            <!-- Yakıt Deposu -->
+            <div class="upgrade-row">
+              <div class="up-info">
+                <span class="up-label">⛽ Yakıt Deposu</span>
+                <div class="up-level-bar"><div class="up-progress" id="bar-tank"></div></div>
+              </div>
+              <button class="up-btn" id="btn-up-tank">
+                <span id="lvl-tank">LVL 1</span> • <span id="cost-tank">130 ₺</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sekme 2: Modifiye & Kişiselleştirme -->
+          <div class="tuning-container" id="garage-tuning" style="display: none;">
+            <!-- Boya Rengi -->
+            <div class="tuning-group">
+              <span class="tuning-title">🎨 Gövde Boyası</span>
+              <div class="color-swatches" id="tuning-colors"></div>
+            </div>
+
+            <!-- Jant Modelleri -->
+            <div class="tuning-group">
+              <span class="tuning-title">🔘 Jant Tasarımı</span>
+              <div class="chip-group" id="tuning-rims"></div>
+            </div>
+
+            <!-- Sürücü Şapkası -->
+            <div class="tuning-group">
+              <span class="tuning-title">🧢 Sürücü Şapkası</span>
+              <div class="chip-group" id="tuning-hats"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Garaj Alt Menüsü -->
+      <footer class="garage-footer">
+        <div class="biome-selector">
+          <div class="biome-card active" data-biome="country">🌄 YEŞİL TEPELER</div>
+          <div class="biome-card" data-biome="desert">🏜️ ALTIN ÇÖL</div>
+          <div class="biome-card" data-biome="arctic">❄️ KUTUP DAĞLARI</div>
+          <div class="biome-card" data-biome="volcano">🌋 VOLKANİK DAĞ</div>
+          <div class="biome-card" data-biome="moon">🌙 AY YÜZEYİ</div>
+        </div>
+
+        <div class="play-action-container">
+          <button id="btn-unlock-vehicle" class="big-btn btn-unlock" style="display: none;">KİLİDİ AÇ: 800 ₺</button>
+          <button id="btn-play" class="big-btn btn-play">YARIŞA BAŞLA ▶</button>
+        </div>
+      </footer>
+    </div>
+
+    <!-- 2. OYUN İÇİ HUD GÖSTERGELERİ -->
+    <div id="screen-hud" style="display: none;">
+      <!-- Üst Mesafe & Hız Göstergesi -->
+      <div class="hud-top-bar">
+        <div class="hud-stat">
+          <span class="hud-label">MESAFE</span>
+          <span class="hud-val" id="hud-distance">0m</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-label">HIZ</span>
+          <span class="hud-val" id="hud-speed">0 km/h</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-label">ALTIN</span>
+          <span class="hud-val" id="hud-coins">0 ₺</span>
+        </div>
+      </div>
+
+      <button id="btn-pause" class="icon-btn hud-pause" title="Duraklat">⏸</button>
+
+      <!-- Benzin Göstergesi -->
+      <div class="hud-meters">
+        <div class="meter-wrapper">
+          <span class="meter-label">⛽ BENZİN</span>
+          <div class="bar-bg"><div class="bar-fill-fuel" id="hud-fuel-bar"></div></div>
+        </div>
+        <div class="meter-wrapper meter-nitro">
+          <span class="meter-label">🚀 NİTRO</span>
+          <div class="bar-bg"><div class="bar-fill-nitro" id="hud-nitro-bar"></div></div>
+        </div>
+      </div>
+
+      <!-- Dokunmatik Pedallar -->
+      <div class="pedals-container">
+        <!-- Sol Pedal -->
+        <div id="btn-brake" class="pedal pedal-brake">
+          <span class="pedal-title">FREN</span>
+          <span class="pedal-sub">◀ GERİ</span>
+        </div>
+
+        <!-- Korna -->
+        <div id="btn-horn" class="pedal pedal-horn"><span class="pedal-title">📯</span></div>
+
+        <!-- Nitro -->
+        <div id="btn-nitro" class="pedal pedal-nitro">
+          <span class="pedal-title">NOS</span>
+        </div>
+
+        <!-- Sağ Pedal -->
+        <div id="btn-gas" class="pedal pedal-gas">
+          <span class="pedal-title">GAZ</span>
+          <span class="pedal-sub">İLERİ ▶</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. AYARLAR MODALI -->
+    <div id="modal-settings">
+      <div class="settings-card">
+        <h2 class="settings-title">⚙️ OYUN AYARLARI</h2>
+        
+        <div class="settings-group">
+          <div class="setting-item">
+            <span class="setting-label">Kontrol Hassasiyeti</span>
+            <select id="setting-sensitivity" class="setting-select">
+              <option value="low">Yumuşak / Düşük</option>
+              <option value="normal" selected>Normal / Dengeli</option>
+              <option value="high">Hızlı / Yüksek</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <span class="setting-label">Pedal Düzeni</span>
+            <select id="setting-layout" class="setting-select">
+              <option value="default" selected>Sol: Fren / Sağ: Gaz</option>
+              <option value="inverted">Sol: Gaz / Sağ: Fren</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <span class="setting-label">Dokunmatik Titreşim (Haptik)</span>
+            <input type="checkbox" id="setting-haptics" class="setting-checkbox" checked>
+          </div>
+
+          <div class="setting-item">
+            <span class="setting-label">FPS Sayacını Göster</span>
+            <input type="checkbox" id="setting-fps" class="setting-checkbox">
+          </div>
+        </div>
+
+        <button id="btn-close-settings" class="big-btn btn-play" style="width: 100%;">KAYDET & KAPAT</button>
+      </div>
+    </div>
+
+    <!-- GÜNLÜK ÖDÜL MODALI -->
+    <div id="modal-daily">
+      <div class="settings-card" style="text-align:center">
+        <h2 class="settings-title">🎁 GÜNLÜK ÖDÜL</h2>
+        <div class="daily-streak" id="daily-streak"></div>
+        <div class="daily-days" id="daily-days"></div>
+        <div class="daily-amount" id="daily-amount"></div>
+        <button id="btn-daily-claim" class="big-btn btn-play" style="width:100%">ÖDÜLÜ AL 💰</button>
+      </div>
+    </div>
+
+    <!-- DURAKLATMA MODALI -->
+    <div id="modal-pause">
+      <div class="settings-card">
+        <h2 class="settings-title">⏸ DURAKLATILDI</h2>
+        <div class="pause-actions">
+          <button id="btn-resume" class="big-btn btn-play">DEVAM ▶</button>
+          <button id="btn-pause-retry" class="big-btn btn-secondary">BAŞTAN 🔄</button>
+          <button id="btn-pause-garage" class="big-btn btn-secondary">GARAJ 🛠️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- GÖREVLER MODALI -->
+    <div id="modal-quests">
+      <div class="settings-card quests-card">
+        <h2 class="settings-title">🏆 GÖREVLER</h2>
+        <div id="quests-list"></div>
+        <button id="btn-close-quests" class="big-btn btn-play" style="width: 100%; margin-top: 12px;">KAPAT</button>
+      </div>
+    </div>
+
+    <!-- 4. ANA EKRANA EKLEME REHBERİ MODALI -->
+    <div id="modal-install">
+      <div class="install-card">
+        <h2 class="install-title">📲 ANA EKRANA EKLE</h2>
+        <p class="install-desc">ZİRVE FIRTINASI'nı telefonunuza tam ekran gerçek bir mobil oyun olarak yükleyin!</p>
+
+        <div class="install-steps">
+          <div>🍏 <strong>iPhone (Safari):</strong> Alttaki <strong>Paylaş (Share)</strong> simgesine dokunun ➔ <strong>"Ana Ekrana Ekle"</strong>yi seçin.</div>
+          <div>🤖 <strong>Android (Chrome):</strong> Sağ üstteki <strong>üç nokta (⋮)</strong> menüsüne dokunun ➔ <strong>"Uygulamayı Yükle"</strong>yi seçin.</div>
+        </div>
+
+        <button id="btn-close-install" class="big-btn btn-play" style="width: 100%;">ANLADIM 👍</button>
+      </div>
+    </div>
+
+    <!-- 5. OYUN BİTTİ EKRANI -->
+    <div id="screen-gameover" style="display: none;">
+      <div class="gameover-card">
+        <h2 id="go-reason">BOYUN KIRILDI!</h2>
+        
+        <div class="go-stats">
+          <div class="go-stat-item">
+            <span class="go-stat-label">MESAFE</span>
+            <span class="go-stat-val" id="go-distance">0 m</span>
+          </div>
+          <div class="go-stat-item">
+            <span class="go-stat-label">REKOR</span>
+            <span class="go-stat-val" id="go-best">0 m</span>
+          </div>
+          <div class="go-stat-item">
+            <span class="go-stat-label">KAZANILAN</span>
+            <span class="go-stat-val" id="go-run-coins">+0 ₺</span>
+          </div>
+          <div class="go-stat-item">
+            <span class="go-stat-label">TOPLAM ALTIN</span>
+            <span class="go-stat-val" id="go-total-coins">0 ₺</span>
+          </div>
+        </div>
+
+        <div class="go-actions">
+          <button id="btn-garage" class="big-btn btn-secondary">GARAJ 🛠️</button>
+          <button id="btn-retry" class="big-btn btn-play">TEKRAR 🔄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 0. AÇILIŞ EKRANI -->
+    <div id="screen-splash">
+      <div class="splash-speed"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="splash-center">
+        <img class="splash-logo" src="icons/icon-192.png" alt="">
+        <h1 class="splash-title"><span>ZİRVE</span><b>FIRTINASI</b></h1>
+        <div class="splash-sub">ANADOLU OFFROAD</div>
+        <div class="splash-best" id="splash-best"></div>
+        <button id="btn-splash-start" class="splash-start">DOKUN & BAŞLA ▶</button>
+      </div>
+      <div class="splash-sign"><span class="sign-line"></span><span class="sign-text">MCT GAME</span><span class="sign-line"></span></div>
+    </div>
+
+    <!-- 6. YATAY ÇEVİR UYARISI -->
+    <div id="orientation-banner">
+      <div class="rotate-phone-anim">📱</div>
+      <h2 class="rotate-title">TELEFONU YATAY ÇEVİRİN</h2>
+      <p class="rotate-desc">En rahat kontroller ve akıcı sürüş deneyimi için cihazınızı yatay konuma getirin.</p>
+      <button class="btn-skip-orientation" onclick="document.getElementById('orientation-banner').style.display='none'">Devam et</button>
+    </div>
+  </div>
+
+  <!-- Scriptler -->
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/terrain.js"></script>
+  <script src="js/vehicles.js"></script>
+  <script src="js/quests.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
