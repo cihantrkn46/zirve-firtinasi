@@ -33,13 +33,3 @@ Garajda artık iki ana sekme bulunuyor:
 - Üst barda **"📲 UYGULAMAYI YÜKLE"** butonu (Android'de doğrudan yükleme istemcisi, iOS'ta interaktif kurulum rehberi).
 
 ---
-
-## 🚀 GitHub'a Gönderme ve Yayına Alma
-
-```bash
-cd /home/cihan/projeler/zirve fırtınası
-
-git push origin main
-```
-GitHub'da **Settings > Pages > Branch: main / (root)** seçtikten 1 dakika sonra oyununuz hazır:  
-👉 `https://<KULLANICI_ADINIZ>.github.io/<REPO_ADI>/`
