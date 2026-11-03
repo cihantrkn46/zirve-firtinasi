@@ -1,4 +1,4 @@
-# 🏆 Hill Climb Legends: Pro Driver (Mobil PWA Oyunu)
+# 🏆 Zirve Fırtınası (Mobil PWA Oyunu)
 
 > **Mobil için baştan sona tasarlanmış, 60 FPS akıcı fizik motoru, zengin modifiye & garaj sistemi ve çizgi film grafikleriyle yeni nesil Hill Climb oyunu!**
 
@@ -37,7 +37,8 @@ Garajda artık iki ana sekme bulunuyor:
 ## 🚀 GitHub'a Gönderme ve Yayına Alma
 
 ```bash
-cd /home/cihan/projeler/hill-climb-odyssey
+cd /home/cihan/projeler/zirve fırtınası
+
 git push origin main
 ```
 GitHub'da **Settings > Pages > Branch: main / (root)** seçtikten 1 dakika sonra oyununuz hazır:  
